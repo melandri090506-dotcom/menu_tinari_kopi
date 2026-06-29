@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tinari Kopi — Menu Eksklusif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & TOKENS ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold:     #C9A84C;
+  --gold2:    #E8C87A;
+  --gold-dim: #8C6A1E;
+  --dark:     #0D0906;
+  --deep:     #1A1008;
+  --mid:      #2C1A0E;
+  --cream:    #F0E6D3;
+  --cream2:   #D6C5A8;
+  --warm:     #F8F3EC;
+  --text:     #2A1A0C;
+  --muted:    #7A6245;
+  --accent:   #8D4925;
+  --accent2:  #C4773B;
+  --star:     #D4A017;
+  --star-dim: #4A3520;
+
+  --ease-back:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:   cubic-bezier(0, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--warm);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== SPLASH — LUXURY VERSION ===== */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: var(--dark);
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s var(--ease-smooth), transform 1s var(--ease-smooth);
+}
+#splash.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
+
+/* Gold particle burst in background */
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 80% 10%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  animation: bgPulse 4s ease-in-out infinite alternate;
+}
+@keyframes bgPulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* Spinning ornament ring */
+.splash-ring {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.15);
+  animation: ringRotate 20s linear infinite;
+}
+.splash-ring::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+}
+.splash-ring::after {
+  content: '';
+  position: absolute;
+  inset: 40px;
+  border-radius: 50%;
+  border: 1px dashed rgba(201,168,76,0.06);
+  animation: ringRotate 10s linear reverse infinite;
+}
+@keyframes ringRotate { to { transform: rotate(360deg); } }
+
+/* Four small gold accent dots on the ring */
+.ring-dot {
+  position: absolute;
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+  top: -2.5px; left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Main logo emblem */
+.splash-emblem {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  animation: emblemIn 1.2s var(--ease-back) 0.3s both;
+}
+@keyframes emblemIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.7); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Premium SVG crown + coffee emblem */
+.splash-crest {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 24px rgba(201,168,76,0.5));
+  animation: crownGlow 2s ease-in-out 1.5s infinite alternate;
+}
+@keyframes crownGlow {
+  from { filter: drop-shadow(0 0 18px rgba(201,168,76,0.4)); }
+  to   { filter: drop-shadow(0 0 36px rgba(201,168,76,0.8)); }
+}
+
+/* Thin gold divider lines */
+.splash-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 260px;
+  margin: 0.5rem 0;
+  animation: lineReveal 0.8s var(--ease-out) 0.9s both;
+}
+@keyframes lineReveal {
+  from { opacity: 0; width: 0; }
+  to   { opacity: 1; width: 260px; }
+}
+.splash-line span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.splash-line em {
+  font-style: normal;
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+}
+
+.splash-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.6rem, 10vw, 4.2rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--cream);
+  text-align: center;
+  line-height: 1;
+  animation: slideUpFadeIn 0.8s var(--ease-out) 0.6s both;
+  /* Gold gradient shimmer */
+  background: linear-gradient(
+    105deg,
+    #E8C87A 0%, #F5E4AA 20%, #C9A84C 40%, #F5E4AA 60%, #E8C87A 80%, #C9A84C 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation:
+    slideUpFadeIn 0.8s var(--ease-out) 0.6s both,
+    goldShimmer 3s linear 1.5s infinite;
+}
+@keyframes goldShimmer {
+  0%   { background-position: 250% center; }
+  100% { background-position: -250% center; }
+}
+
+.splash-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  animation: slideUpFadeIn 0.8s var(--ease-out) 1s both;
+}
+
+/* Animated progress bar at bottom */
+.splash-progress-wrap {
+  position: absolute;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 2;
+  animation: fadeIn 0.5s ease 1s both;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.splash-progress {
+  width: 120px;
+  height: 1px;
+  background: rgba(201,168,76,0.2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.splash-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold2));
+  border-radius: 999px;
+  animation: progressFill 2.8s var(--ease-smooth) 0.4s forwards;
+}
+@keyframes progressFill { to { width: 100%; } }
+
+.splash-ready-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+}
+
+/* Particle dots floating */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: particleFloat var(--dur, 4s) var(--ease-smooth) var(--delay, 0s) infinite;
+}
+@keyframes particleFloat {
+  0%   { opacity: 0; transform: translateY(0) scale(0); }
+  15%  { opacity: 0.6; }
+  80%  { opacity: 0.2; }
+  100% { opacity: 0; transform: translateY(-200px) scale(1.5); }
+}
+
+@keyframes slideUpFadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== MAIN CONTENT ===== */
+#main {
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-smooth);
+}
+#main.visible { opacity: 1; }
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--deep);
+  padding: 2.5rem 1.25rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 120%, rgba(201,168,76,0.09) 0%, transparent 65%),
+    url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=60') center/cover no-repeat;
+  opacity: 0.18;
+}
+.header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(13,9,6,0.7) 0%, rgba(26,16,8,0.9) 100%);
+}
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+.header-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-weight: 400;
+  animation: slideUpFadeIn 0.6s var(--ease-out) 0.1s both;
+}
+.header-logo-icon {
+  margin: 0 auto 1rem;
+  animation: slideUpFadeIn 0.6s var(--ease-out) 0.2s both;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--cream);
+  line-height: 1.1;
+  animation: slideUpFadeIn 0.6s var(--ease-out) 0.25s both;
+}
+.header-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 200px;
+  margin: 1rem auto;
+  animation: slideUpFadeIn 0.6s var(--ease-out) 0.35s both;
+}
+.header-divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent); }
+.header-divider em { font-style: normal; color: var(--gold); font-size: 0.6rem; }
+.header-sub {
+  font-size: 0.8rem;
+  color: rgba(240,230,211,0.6);
+  letter-spacing: 0.12em;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  animation: slideUpFadeIn 0.6s var(--ease-out) 0.45s both;
+}
+
+/* Photo strip below header */
+.photo-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 120px;
+  overflow: hidden;
+}
+@media (max-width: 500px) { .photo-strip { height: 80px; } }
+.photo-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.75) saturate(0.8);
+  transition: filter 0.4s ease;
+}
+.photo-strip img:hover { filter: brightness(0.95) saturate(1); }
+
+/* ===== BEST SELLER SECTION ===== */
+.bestseller-section {
+  padding: 2rem 1rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.section-header-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--cream2)); }
+.section-header-line.right { background: linear-gradient(90deg, var(--cream2), transparent); }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.section-title .gold { color: var(--gold-dim); font-style: italic; }
+.section-eyebrow {
+  text-align: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.4rem;
+}
+
+.bestseller-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scroll-snap-type: x mandatory;
+}
+.bestseller-scroll::-webkit-scrollbar { height: 3px; }
+.bestseller-scroll::-webkit-scrollbar-track { background: var(--warm); }
+.bestseller-scroll::-webkit-scrollbar-thumb { background: var(--cream2); border-radius: 99px; }
+
+/* Best seller card */
+.bs-card {
+  min-width: 200px;
+  max-width: 200px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--cream);
+  cursor: pointer;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  transition: box-shadow 0.3s ease, transform 0.25s ease;
+  position: relative;
+}
+.bs-card:hover { box-shadow: 0 8px 28px rgba(44,26,14,0.12); transform: translateY(-3px); }
+.bs-badge-wrap {
+  position: absolute;
+  top: 8px; left: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bs-rank {
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.bs-img-wrap { height: 120px; overflow: hidden; }
+.bs-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.bs-card:hover .bs-img-wrap img { transform: scale(1.07); }
+.bs-body { padding: 0.65rem 0.75rem 0.85rem; }
+.bs-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+.bs-stars { display: flex; gap: 2px; margin-bottom: 0.3rem; }
+.bs-star { font-size: 0.75rem; color: var(--star); }
+.bs-star.dim { color: var(--star-dim); }
+.bs-stats {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.bs-price {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+/* Empty state best seller */
+.bs-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  width: 100%;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 1.25rem 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: var(--warm);
+  border-bottom: 1px solid var(--cream);
+  border-top: 1px solid var(--cream);
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-btn {
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid var(--cream2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease-smooth);
+}
+.filter-btn:hover { background: var(--cream); color: var(--text); border-color: var(--accent); transform: scale(1.05); }
+.filter-btn:active { transform: scale(0.97); }
+.filter-btn.active {
+  background: var(--mid);
+  color: var(--gold2);
+  border-color: var(--mid);
+  box-shadow: 0 3px 12px rgba(26,16,8,0.2);
+}
+
+/* ===== MENU SECTION ===== */
+.menu-section {
+  padding: 1.5rem 1rem 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 560px) { .menu-grid { gap: 1.25rem; } }
+@media (min-width: 780px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .menu-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* ===== MENU CARD ===== */
+.menu-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--cream);
+  opacity: 0;
+  transform: translateY(32px);
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.25s var(--ease-smooth);
+}
+.menu-card.card-visible {
+  animation: cardReveal 0.55s var(--ease-back) forwards;
+}
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(32px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.menu-card:hover { box-shadow: 0 8px 32px rgba(44,26,14,0.13); transform: translateY(-3px) scale(1.01); }
+.menu-card:active { transform: scale(0.98); }
+.menu-card.filter-in {
+  animation: filterIn 0.4s var(--ease-back) forwards;
+}
+@keyframes filterIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.card-img-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 140px;
+}
+@media (min-width: 560px) { .card-img-wrap { height: 160px; } }
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s var(--ease-smooth);
+}
+.menu-card:hover .card-img-wrap img { transform: scale(1.08); }
+
+.card-badge {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(26,16,8,0.75);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+.card-body {
+  padding: 0.75rem 0.85rem 0.85rem;
+}
+.card-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+  font-family: 'Montserrat', sans-serif;
+}
+.card-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Star rating on card */
+.card-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+.card-stars {
+  display: flex;
+  gap: 2px;
+}
+.card-star {
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--star-dim);
+  transition: color 0.15s ease, transform 0.15s var(--ease-back);
+  line-height: 1;
+  /* stop card click from firing */
+}
+.card-star.filled { color: var(--star); }
+.card-star:hover { transform: scale(1.3); }
+.card-star:hover ~ .card-star { color: var(--star-dim); }
+.card-stars:hover .card-star { color: var(--star); }
+.card-stars:hover .card-star:hover ~ .card-star { color: var(--star-dim); }
+
+.card-rating-count {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.card-price {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,9,6,0);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: background 0.4s var(--ease-smooth);
+  pointer-events: none;
+  opacity: 0;
+}
+.modal-overlay.open {
+  background: rgba(13,9,6,0.82);
+  pointer-events: all;
+  opacity: 1;
+}
+.modal-box {
+  background: var(--warm);
+  border-radius: 20px;
+  max-width: 420px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  transform: scale(0.6) translateY(30px);
+  opacity: 0;
+  transition: transform 0.4s var(--ease-back), opacity 0.3s var(--ease-smooth);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-overlay.open .modal-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.modal-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}
+.modal-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(13,9,6,0.65);
+  color: var(--cream);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s var(--ease-back), background 0.2s;
+  backdrop-filter: blur(4px);
+}
+.modal-close:hover { transform: rotate(90deg) scale(1.1); background: var(--accent); }
+.modal-content { padding: 1.25rem 1.5rem 1.75rem; }
+.modal-cat {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.3rem;
+  font-family: 'Montserrat', sans-serif;
+}
+.modal-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+.modal-desc {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+.modal-divider { height: 1px; background: var(--cream); margin: 0.85rem 0; }
+.modal-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.modal-price-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.modal-price { font-size: 1.5rem; font-weight: 600; color: var(--accent); font-family: 'Cormorant Garamond', serif; }
+
+/* Modal rating section */
+.modal-rating-section {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.modal-rating-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 0.6rem;
+}
+.modal-stars-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0.5rem;
+}
+.modal-star {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--star-dim);
+  transition: color 0.15s, transform 0.2s var(--ease-back);
+  line-height: 1;
+}
+.modal-star.active { color: var(--star); }
+.modal-star:hover { transform: scale(1.2); }
+.modal-stars-row:hover .modal-star { color: var(--star); }
+.modal-stars-row:hover .modal-star:hover ~ .modal-star { color: var(--star-dim); }
+
+.modal-rating-summary {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.modal-rating-summary strong { color: var(--text); }
+
+.modal-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.modal-tag {
+  background: var(--cream);
+  color: var(--text);
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--mid);
+  color: var(--gold2);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201,168,76,0.2);
+  z-index: 9000;
+  opacity: 0;
+  transition: all 0.4s var(--ease-back);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: var(--deep);
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+.footer span { color: var(--gold-dim); }
+
+/* Utility */
+.hidden { display: none !important; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--warm); }
+::-webkit-scrollbar-thumb { background: var(--cream2); border-radius: 99px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LUXURY SPLASH ===== -->
+<div id="splash" aria-live="polite" role="status">
+  <div class="splash-bg"></div>
+
+  <!-- Floating particles -->
+  <div class="particle" style="width:3px;height:3px;left:20%;bottom:30%;--dur:5s;--delay:0.5s"></div>
+  <div class="particle" style="width:2px;height:2px;left:75%;bottom:25%;--dur:6s;--delay:1s"></div>
+  <div class="particle" style="width:4px;height:4px;left:45%;bottom:15%;--dur:4.5s;--delay:0.2s"></div>
+  <div class="particle" style="width:2px;height:2px;left:60%;bottom:40%;--dur:7s;--delay:1.5s"></div>
+  <div class="particle" style="width:3px;height:3px;left:30%;bottom:20%;--dur:5.5s;--delay:0.8s"></div>
+  <div class="particle" style="width:2px;height:2px;left:85%;bottom:35%;--dur:6.5s;--delay:0.3s"></div>
+  <div class="particle" style="width:3px;height:3px;left:10%;bottom:50%;--dur:4s;--delay:2s"></div>
+  <div class="particle" style="width:2px;height:2px;left:55%;bottom:55%;--dur:7.5s;--delay:0.7s"></div>
+
+  <!-- Spinning ring ornament -->
+  <div class="splash-ring">
+    <div class="ring-dot"></div>
+  </div>
+
+  <!-- Main emblem -->
+  <div class="splash-emblem">
+    <!-- Premium SVG crest: crown + coffee cup -->
+    <svg class="splash-crest" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Crown base -->
+      <path d="M24 58 L30 38 L40 50 L48 30 L56 50 L66 38 L72 58 Z" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="22" y="58" width="52" height="5" rx="2.5" fill="#C9A84C" opacity="0.4"/>
+      <!-- Crown gems -->
+      <circle cx="48" cy="32" r="3" fill="#C9A84C" opacity="0.8"/>
+      <circle cx="30" cy="40" r="2" fill="#C9A84C" opacity="0.5"/>
+      <circle cx="66" cy="40" r="2" fill="#C9A84C" opacity="0.5"/>
+      <!-- Coffee cup body -->
+      <path d="M34 66 h28 l-3 14 H37 Z" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M60 68 c4 0 7 2.5 7 6 s-3 6-7 6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <!-- Steam wisps -->
+      <path d="M41 63 Q42.5 60 41 57" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <path d="M48 63 Q49.5 59 48 56" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <path d="M55 63 Q56.5 60 55 57" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <!-- Saucer -->
+      <ellipse cx="48" cy="81" rx="18" ry="2.5" fill="#C9A84C" opacity="0.25"/>
+      <!-- Corner ornament dots -->
+      <circle cx="10" cy="10" r="1.5" fill="#C9A84C" opacity="0.3"/>
+      <circle cx="86" cy="10" r="1.5" fill="#C9A84C" opacity="0.3"/>
+      <circle cx="10" cy="86" r="1.5" fill="#C9A84C" opacity="0.3"/>
+      <circle cx="86" cy="86" r="1.5" fill="#C9A84C" opacity="0.3"/>
+      <!-- Corner lines -->
+      <path d="M6 6 L16 6 M6 6 L6 16" stroke="#C9A84C" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+      <path d="M90 6 L80 6 M90 6 L90 16" stroke="#C9A84C" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+      <path d="M6 90 L16 90 M6 90 L6 80" stroke="#C9A84C" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+      <path d="M90 90 L80 90 M90 90 L90 80" stroke="#C9A84C" stroke-width="0.8" stroke-linecap="round" opacity="0.3"/>
+    </svg>
+
+    <div class="splash-line">
+      <span></span><em>Est. 2024</em><span></span>
+    </div>
+    <h1 class="splash-name">Tinari Kopi</h1>
+    <p class="splash-subtitle">Ngawi &bull; Fine Coffee Experience</p>
+  </div>
+
+  <!-- Loading bar -->
+  <div class="splash-progress-wrap">
+    <div class="splash-progress">
+      <div class="splash-progress-bar"></div>
+    </div>
+    <span class="splash-ready-text">Mempersiapkan menu &hellip;</span>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="main">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-bg"></div>
+    <div class="header-overlay"></div>
+    <div class="header-content">
+      <p class="header-eyebrow">Fine Coffee Experience</p>
+      <div class="header-logo-icon" aria-hidden="true">
+        <svg width="52" height="52" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 46 h28 l-3 14 H27 Z" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M50 48 c4 0 7 2.5 7 6 s-3 6-7 6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M31 43 Q32.5 40 31 37" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+          <path d="M38 43 Q39.5 39 38 36" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+          <path d="M45 43 Q46.5 40 45 37" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.8"/>
+          <ellipse cx="38" cy="61" rx="15" ry="2" fill="#C9A84C" opacity="0.2"/>
+        </svg>
+      </div>
+      <h1 class="header-title">Tinari Kopi</h1>
+      <div class="header-divider">
+        <span></span><em>✦</em><span></span>
+      </div>
+      <p class="header-sub">Pilih menu favoritmu & berikan penilaianmu</p>
+    </div>
+  </header>
+
+  <!-- PHOTO STRIP -->
+  <div class="photo-strip" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=70" alt="">
+    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&q=70" alt="">
+    <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=400&q=70" alt="">
+    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=70" alt="">
+  </div>
+
+  <!-- BEST SELLER SECTION -->
+  <section class="bestseller-section" id="bestsellerSection">
+    <p class="section-eyebrow">★ Pilihan Terfavorit</p>
+    <div class="section-header">
+      <div class="section-header-line"></div>
+      <h2 class="section-title">Best <span class="gold">Seller</span></h2>
+      <div class="section-header-line right"></div>
+    </div>
+    <div class="bestseller-scroll" id="bestsellerScroll">
+      <p class="bs-empty">Belum ada penilaian. Jadilah yang pertama memberi rating! ⭐</p>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <nav class="filter-bar" aria-label="Filter kategori">
+    <button class="filter-btn active" data-cat="all">Semua</button>
+    <button class="filter-btn" data-cat="coffee">Coffee</button>
+    <button class="filter-btn" data-cat="noncoffee">Non-Coffee</button>
+    <button class="filter-btn" data-cat="food">Makanan</button>
+    <button class="filter-btn" data-cat="dessert">Dessert</button>
+  </nav>
+
+  <!-- MENU GRID -->
+  <main class="menu-section">
+    <div class="section-header" style="margin-bottom:1.25rem">
+      <div class="section-header-line"></div>
+      <h2 class="section-title">Menu <span class="gold">Kami</span></h2>
+      <div class="section-header-line right"></div>
+    </div>
+    <div class="menu-grid" id="menuGrid" role="list"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-logo">Tinari Kopi</div>
+    <p>&copy; 2024 <span>Tinari Kopi</span> &mdash; Scan QR di meja untuk memesan &bull; Ngawi</p>
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalName">
+  <div class="modal-box">
+    <img class="modal-img" id="modalImg" src="" alt="">
+    <button class="modal-close" id="modalClose" aria-label="Tutup">&#10005;</button>
+    <div class="modal-content">
+      <p class="modal-cat" id="modalCat"></p>
+      <h2 class="modal-name" id="modalName"></h2>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-divider"></div>
+      <div class="modal-price-row">
+        <span class="modal-price-label">Harga</span>
+        <span class="modal-price" id="modalPrice"></span>
+      </div>
+
+      <!-- Rating in modal -->
+      <div class="modal-rating-section">
+        <p class="modal-rating-title">Beri Penilaian Anda</p>
+        <div class="modal-stars-row" id="modalStarsRow" role="group" aria-label="Rating bintang">
+          <span class="modal-star" data-val="1" role="button" tabindex="0" aria-label="1 bintang">★</span>
+          <span class="modal-star" data-val="2" role="button" tabindex="0" aria-label="2 bintang">★</span>
+          <span class="modal-star" data-val="3" role="button" tabindex="0" aria-label="3 bintang">★</span>
+          <span class="modal-star" data-val="4" role="button" tabindex="0" aria-label="4 bintang">★</span>
+          <span class="modal-star" data-val="5" role="button" tabindex="0" aria-label="5 bintang">★</span>
+        </div>
+        <p class="modal-rating-summary" id="modalRatingSummary">Tap bintang untuk menilai</p>
+      </div>
+
+      <div class="modal-tags" id="modalTags"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== MENU DATA ===== */
+const menuData = [
+  { id: 1, cat: 'coffee', name: 'Espresso Classic',
+    desc: 'Espresso murni dengan crema tebal. Pahit yang menyenangkan, aroma biji robusta pilihan Jawa.',
+    price: 'Rp 22.000', tags: ['Hot', 'Strong', 'Single Origin'],
+    img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&q=80' },
+  { id: 2, cat: 'coffee', name: 'Caramel Latte',
+    desc: 'Espresso lembut dengan susu steamed dan siraman karamel manis homemade di atasnya.',
+    price: 'Rp 35.000', tags: ['Hot/Ice', 'Sweet', 'Milk-based'],
+    img: 'https://images.unsplash.com/photo-1485808191679-5f86510bd9d5?w=600&q=80' },
+  { id: 3, cat: 'coffee', name: 'Kopi Susu Amarta',
+    desc: 'Andalan kami. Kopi robusta lokal diseduh cold brew 16 jam, dipadukan susu segar dan gula aren.',
+    price: 'Rp 28.000', tags: ['Ice', 'House Special', 'Bestseller'],
+    img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80' },
+  { id: 4, cat: 'coffee', name: 'Cappuccino',
+    desc: 'Rasio sempurna espresso, susu steamed, dan foam lembut. Klasik yang tidak pernah salah.',
+    price: 'Rp 30.000', tags: ['Hot', 'Creamy'],
+    img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&q=80' },
+  { id: 5, cat: 'noncoffee', name: 'Matcha Latte',
+    desc: 'Bubuk matcha premium Uji Jepang, dilarutkan sempurna dengan susu oat. Earthy dan menyegarkan.',
+    price: 'Rp 32.000', tags: ['Hot/Ice', 'Earthy', 'No Caffeine'],
+    img: 'https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?w=600&q=80' },
+  { id: 6, cat: 'noncoffee', name: 'Coklat Panas',
+    desc: 'Dark chocolate 70% dilelehkan bersama susu full cream. Kental, hangat, memanjakan.',
+    price: 'Rp 28.000', tags: ['Hot', 'Rich', 'Comfort Drink'],
+    img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&q=80' },
+  { id: 7, cat: 'noncoffee', name: 'Strawberry Creamy',
+    desc: 'Jus stroberi segar dicampur susu evaporasi, es batu, dan sirup vanila. Cocok untuk siang hari.',
+    price: 'Rp 30.000', tags: ['Ice', 'Fruity', 'Kids Friendly'],
+    img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600&q=80' },
+  { id: 8, cat: 'food', name: 'Avocado Toast',
+    desc: 'Roti sourdough panggang dengan alpukat segar, telur poached, taburan biji wijen dan flakes garam.',
+    price: 'Rp 45.000', tags: ['Healthy', 'Brunch', 'Vegetarian'],
+    img: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c820?w=600&q=80' },
+  { id: 9, cat: 'food', name: 'Croissant Butter',
+    desc: 'Croissant buttery berlapis 36 lapis, dipanggang segar tiap pagi. Renyah di luar, lembut di dalam.',
+    price: 'Rp 32.000', tags: ['Freshly Baked', 'Morning'],
+    img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80' },
+  { id: 10, cat: 'food', name: 'Sandwich Keju & Jamur',
+    desc: 'Sourdough lapis dua dengan keju mozarella, jamur kancing sauté, dan saus pesto hijau.',
+    price: 'Rp 48.000', tags: ['Filling', 'Vegetarian', 'Hot'],
+    img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80' },
+  { id: 11, cat: 'dessert', name: 'Tiramisu Amarta',
+    desc: 'Tiramisu klasik Italia dengan lady finger direndam espresso, krim mascarpone, dan tabur kokoa.',
+    price: 'Rp 38.000', tags: ['Italian', 'Chilled', 'Bestseller'],
+    img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=80' },
+  { id: 12, cat: 'dessert', name: 'Lava Cake Coklat',
+    desc: 'Kue coklat hangat dengan lelehan molten dark chocolate di tengahnya. Disajikan dengan es krim vanila.',
+    price: 'Rp 42.000', tags: ['Warm', 'Indulgent', 'Signature'],
+    img: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600&q=80' },
+];
+
+/* ===== RATING STORAGE ===== */
+// Using window.storage (persistent artifact storage) with localStorage fallback
+const STORAGE_KEY = 'tinari_ratings_v1';
+
+async function loadRatings() {
+  // Try window.storage first
+  if (window.storage) {
+    try {
+      const result = await window.storage.get(STORAGE_KEY);
+      if (result) return JSON.parse(result.value);
+    } catch(e) {}
+  }
+  // Fallback to in-memory
+  return window._ratingsCache || {};
+}
+
+async function saveRatings(data) {
+  window._ratingsCache = data;
+  if (window.storage) {
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(data));
+    } catch(e) {}
+  }
+}
+
+// ratings structure: { [itemId]: { total: number, count: number } }
+let ratingsData = {};
+
+async function initRatings() {
+  ratingsData = await loadRatings();
+  renderAll();
+  renderBestSeller();
+}
+
+function getAvg(id) {
+  const r = ratingsData[id];
+  if (!r || r.count === 0) return 0;
+  return r.total / r.count;
+}
+function getCount(id) { return (ratingsData[id] && ratingsData[id].count) || 0; }
+
+async function addRating(id, val) {
+  if (!ratingsData[id]) ratingsData[id] = { total: 0, count: 0 };
+  ratingsData[id].total += val;
+  ratingsData[id].count += 1;
+  await saveRatings(ratingsData);
+}
+
+/* ===== SPLASH ===== */
+const splash = document.getElementById('splash');
+const mainEl = document.getElementById('main');
+
+initRatings(); // Load ratings early
+
+setTimeout(() => {
+  splash.classList.add('hide');
+  mainEl.classList.add('visible');
+  setTimeout(() => { splash.style.display = 'none'; }, 1100);
+  setTimeout(triggerCardAnimations, 350);
+}, 3200);
+
+/* ===== RENDER HELPERS ===== */
+function catLabel(cat) {
+  return { coffee: 'Coffee', noncoffee: 'Non-Coffee', food: 'Makanan', dessert: 'Dessert' }[cat] || cat;
+}
+
+function starsHtml(avg, cls = 'card-star', total = 5) {
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    const filled = i <= Math.round(avg);
+    html += `<span class="${cls}${filled ? ' filled' : ' dim'}">★</span>`;
+  }
+  return html;
+}
+
+/* ===== RENDER CARDS ===== */
+const grid = document.getElementById('menuGrid');
+
+function renderAll() {
+  const cat = document.querySelector('.filter-btn.active')?.dataset.cat || 'all';
+  const filtered = cat === 'all' ? menuData : menuData.filter(m => m.cat === cat);
+  renderCards(filtered, false);
+}
+
+function renderCards(data, withFilterAnim = false) {
+  grid.innerHTML = '';
+  data.forEach((item, i) => {
+    const avg = getAvg(item.id);
+    const cnt = getCount(item.id);
+    const card = document.createElement('div');
+    card.className = 'menu-card';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    card.dataset.id = item.id;
+
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${item.img}" alt="${item.name}" loading="lazy">
+        <span class="card-badge">${catLabel(item.cat)}</span>
+      </div>
+      <div class="card-body">
+        <p class="card-name">${item.name}</p>
+        <p class="card-desc">${item.desc}</p>
+        <div class="card-rating-row">
+          <div class="card-stars" data-id="${item.id}" aria-label="Rating ${item.name}">
+            ${[1,2,3,4,5].map(v => `<span class="card-star${v <= Math.round(avg) ? ' filled' : ''}" data-val="${v}" role="button" tabindex="0" aria-label="${v} bintang">★</span>`).join('')}
+          </div>
+          <span class="card-rating-count">${cnt > 0 ? avg.toFixed(1) + ' ('+cnt+')' : 'Belum dinilai'}</span>
+        </div>
+        <p class="card-price">${item.price}</p>
+      </div>`;
+
+    // Card click → open modal (not stars)
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('card-star')) return;
+      openModal(item);
+    });
+    card.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && !e.target.classList.contains('card-star')) openModal(item);
+    });
+
+    // Card star click
+    card.querySelectorAll('.card-stars').forEach(starsEl => {
+      starsEl.querySelectorAll('.card-star').forEach(star => {
+        star.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const val = parseInt(star.dataset.val);
+          const id = parseInt(starsEl.dataset.id);
+          await addRating(id, val);
+          showToast(`Terima kasih! Anda memberi ${val} ★ untuk ${item.name}`);
+          renderAll();
+          renderBestSeller();
+        });
+        star.addEventListener('keydown', async (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); e.stopPropagation();
+            star.click();
+          }
+        });
+      });
+    });
+
+    if (withFilterAnim) {
+      setTimeout(() => card.classList.add('filter-in'), i * 60);
+    }
+    grid.appendChild(card);
+  });
+}
+
+function triggerCardAnimations() {
+  grid.querySelectorAll('.menu-card').forEach((card, i) => {
+    setTimeout(() => card.classList.add('card-visible'), i * 70);
+  });
+}
+
+/* ===== FILTER ===== */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    const filtered = cat === 'all' ? menuData : menuData.filter(m => m.cat === cat);
+
+    // Fade out
+    grid.querySelectorAll('.menu-card').forEach(c => {
+      c.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+      c.style.opacity = '0';
+      c.style.transform = 'scale(0.92)';
+    });
+    setTimeout(() => renderCards(filtered, true), 200);
+  });
+});
+
+/* ===== BEST SELLER ===== */
+function renderBestSeller() {
+  const scroll = document.getElementById('bestsellerScroll');
+  // Get items with at least 1 rating, sort by average desc then count desc
+  const rated = menuData
+    .filter(m => getCount(m.id) > 0)
+    .map(m => ({ ...m, avg: getAvg(m.id), cnt: getCount(m.id) }))
+    .sort((a, b) => b.avg - a.avg || b.cnt - a.cnt)
+    .slice(0, 5);
+
+  if (rated.length === 0) {
+    scroll.innerHTML = '<p class="bs-empty">Belum ada penilaian. Jadilah yang pertama memberi rating! ⭐</p>';
+    return;
+  }
+
+  scroll.innerHTML = '';
+  rated.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'bs-card';
+    const rankLabel = i === 0 ? '🥇 #1' : i === 1 ? '🥈 #2' : i === 2 ? '🥉 #3' : `#${i+1}`;
+    card.innerHTML = `
+      <div class="bs-badge-wrap">
+        <span class="bs-rank">${rankLabel}</span>
+      </div>
+      <div class="bs-img-wrap">
+        <img src="${item.img}" alt="${item.name}" loading="lazy">
+      </div>
+      <div class="bs-body">
+        <p class="bs-name">${item.name}</p>
+        <div class="bs-stars">
+          ${[1,2,3,4,5].map(v => `<span class="bs-star${v <= Math.round(item.avg) ? '' : ' dim'}">★</span>`).join('')}
+        </div>
+        <p class="bs-stats">${item.avg.toFixed(1)} dari 5 &bull; ${item.cnt} penilaian</p>
+        <p class="bs-price">${item.price}</p>
+      </div>`;
+    card.addEventListener('click', () => openModal(item));
+    scroll.appendChild(card);
+  });
+}
+
+/* ===== MODAL ===== */
+const overlay   = document.getElementById('modalOverlay');
+const modalImg  = document.getElementById('modalImg');
+const modalCat  = document.getElementById('modalCat');
+const modalName = document.getElementById('modalName');
+const modalDesc = document.getElementById('modalDesc');
+const modalPrice = document.getElementById('modalPrice');
+const modalTags  = document.getElementById('modalTags');
+const modalClose = document.getElementById('modalClose');
+const modalStarsRow = document.getElementById('modalStarsRow');
+const modalRatingSummary = document.getElementById('modalRatingSummary');
+
+let currentModalItem = null;
+
+function updateModalRatingUI() {
+  if (!currentModalItem) return;
+  const avg = getAvg(currentModalItem.id);
+  const cnt = getCount(currentModalItem.id);
+  modalStarsRow.querySelectorAll('.modal-star').forEach((star, i) => {
+    star.classList.toggle('active', i < Math.round(avg));
+  });
+  if (cnt > 0) {
+    modalRatingSummary.innerHTML = `<strong>${avg.toFixed(1)} / 5</strong> &bull; ${cnt} penilaian`;
+  } else {
+    modalRatingSummary.textContent = 'Tap bintang untuk menilai';
+  }
+}
+
+function openModal(item) {
+  currentModalItem = item;
+  modalImg.src = item.img;
+  modalImg.alt = item.name;
+  modalCat.textContent = catLabel(item.cat);
+  modalName.textContent = item.name;
+  modalDesc.textContent = item.desc;
+  modalPrice.textContent = item.price;
+  modalTags.innerHTML = item.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  updateModalRatingUI();
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalItem = null;
+}
+
+// Modal star clicks
+modalStarsRow.querySelectorAll('.modal-star').forEach(star => {
+  star.addEventListener('click', async () => {
+    if (!currentModalItem) return;
+    const val = parseInt(star.dataset.val);
+    // Animate stars
+    modalStarsRow.querySelectorAll('.modal-star').forEach((s, i) => {
+      s.classList.toggle('active', i < val);
+    });
+    await addRating(currentModalItem.id, val);
+    updateModalRatingUI();
+    showToast(`Terima kasih! Anda memberi ${val} ★ untuk ${currentModalItem.name}`);
+    renderAll();
+    renderBestSeller();
+  });
+  star.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); star.click(); }
+  });
+});
+
+modalClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ===== TOAST ===== */
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
